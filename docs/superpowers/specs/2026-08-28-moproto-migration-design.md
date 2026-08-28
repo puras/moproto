@@ -155,7 +155,7 @@
 
 ### 4.3 文件内 doc/注释中的 import 路径
 
-mogo 注释里有多处形如 `// 用于满足 internal/app/gateway/common.Request 接口` 或 `// 协议层（如 internal/app/gateway/protocol）...` 的引用。这些**是注释，不影响编译**，但仍建议替换为 moproto 等价路径（`internal/app/...` 是 mogo 业务概念，迁移后语义变空；最简方案是保留原注释不动以最大化"零改动"原则——本设计选择**保留**）。
+mogo 注释里有多处形如 `// 用于满足 internal/app/gateway/common.Request 接口` 或 `// 协议层（如 internal/app/gateway/protocol）...` 的引用。这些**是注释，不影响编译**。`internal/app/...` 是 mogo 业务概念，迁移到 moproto 后语义变空；为最大化"零改动"原则，**本设计选择保留原注释不动**（不替换）。
 
 ## 5. go.mod 与三方依赖
 
@@ -205,7 +205,8 @@ require (
    cp -R $SRC/usage              $DST/usage
    ```
 
-2. **删除 mogo 内的 go.mod / go.sum**（如被复制过来）：
+2. **删除 mogo 子包内的 go.mod / go.sum**（如被复制过来）。`find` 用 `-not -path` 排除 moproto 顶层 `go.mod`，避免误删：
+
    ```bash
    find $DST -name 'go.mod' -not -path "$DST/go.mod" -delete
    find $DST -name 'go.sum' -delete
