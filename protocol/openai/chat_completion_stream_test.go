@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	openai "hegq.net/mogo/pkg/protocol/openai"
+	openai "hegq.net/moproto/protocol/openai"
 )
 
 // TestParseSSEEvent_PreservesRawBytes 验证上游 chunk 的 omitempty 零值字段

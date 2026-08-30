@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	openai "hegq.net/mogo/pkg/protocol/openai"
+	openai "hegq.net/moproto/protocol/openai"
 )
 
 // === A. ChatCompletionParams 顶层字段 marshal 测试（8 case） ===

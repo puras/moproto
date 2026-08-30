@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	anthropic "hegq.net/mogo/pkg/protocol/anthropic"
+	anthropic "hegq.net/moproto/protocol/anthropic"
 )
 
 // TestWireFormatResponseMessage 验证顶层 AnthropicMessageResponse 的 JSON marshal 输出。

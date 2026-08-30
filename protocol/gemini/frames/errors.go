@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"hegq.net/mogo/pkg/protocol/gemini"
+	"hegq.net/moproto/protocol/gemini"
 )
 
 // WriteGeminiError 把 errormap.ErrorType 字符串值转换为 Gemini 协议原生错误响应，

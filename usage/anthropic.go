@@ -3,7 +3,7 @@ package usage
 import (
 	"encoding/json"
 
-	"hegq.net/mogo/pkg/protocol/anthropic"
+	"hegq.net/moproto/protocol/anthropic"
 )
 
 // FromAnthropic 将 AnthropicUsage 转换为统一 Usage。

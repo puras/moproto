@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"hegq.net/mogo/pkg/protocol/anthropic"
+	"hegq.net/moproto/protocol/anthropic"
 )
 
 // WriteAnthropicError 把 errormap.ErrorType 字符串值转换为 Anthropic 协议原生错误响应，

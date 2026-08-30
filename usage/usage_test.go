@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	pkganthropic "hegq.net/mogo/pkg/protocol/anthropic"
-	pkgopenai "hegq.net/mogo/pkg/protocol/openai"
+	pkganthropic "hegq.net/moproto/protocol/anthropic"
+	pkgopenai "hegq.net/moproto/protocol/openai"
 )
 
 // ============== P0-1: Base 字段命名统一（Anthropic 风格为权威） ==============
