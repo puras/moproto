@@ -128,7 +128,7 @@ for d in protocol/openai protocol/anthropic protocol/gemini usage; do
   echo "$d: src=$cnt_src dst=$cnt_dst"
 done
 ```
-Expected: 每个目录 src 与 dst 的 `.go` 文件数量相同（openai=约 25、anthropic=约 27、gemini=约 18、usage=约 6）。
+Expected: 每个目录 src 与 dst 的 `.go` 文件数量相同（用 `wc -l` 取得实际值后比对；如差异非零则说明复制未完成）。
 
 - [ ] **Step 3：删除子目录内被复制过来的 go.mod / go.sum**
 
