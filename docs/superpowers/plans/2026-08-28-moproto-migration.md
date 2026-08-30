@@ -132,13 +132,13 @@ Expected: 每个目录 src 与 dst 的 `.go` 文件数量相同（openai=约 25�
 
 - [ ] **Step 3：删除子目录内被复制过来的 go.mod / go.sum**
 
-mogo 各子包内通常没有独立 go.mod，但 frames 子目录或 vendor 元数据若被复制应清理：
+mogo 各子包内通常没有独立 go.mod，但 frames 子目录或 vendor 元数据若被复制应清理。为安全起见只扫描 `protocol/` 与 `usage/` 子树，避免误删 moproto 顶层 `go.mod`/`go.sum`：
 
 Run:
 ```bash
 DST=/Users/puras/workspace/proj/hegq/moproto
-find "$DST" -name 'go.mod' -not -path "$DST/go.mod" -delete
-find "$DST" -name 'go.sum' -delete
+find "$DST/protocol" "$DST/usage" -name 'go.mod' -delete
+find "$DST/protocol" "$DST/usage" -name 'go.sum' -delete
 ```
 
 - [ ] **Step 4：确认 mogo 仍未被修改**
