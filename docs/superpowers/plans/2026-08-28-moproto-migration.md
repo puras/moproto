@@ -271,7 +271,7 @@ Run:
 ```bash
 cd /Users/puras/workspace/proj/hegq/moproto && go vet ./...
 ```
-Expected: 退出码 0，零警告。
+Expected: mogo 原代码继承的"repeats json tag"警告可作为遗留接受，不视为 fail（spec §1 零业务改动优先于 §9 零警告）。**迁移不得引入新的 vet 警告**——若仅是 mogo 原代码已存在的重复 json tag，迁移仍视为通过。
 
 - [ ] **Step 5：commit（go.mod / go.sum 可能被 tidy 改动）**
 
@@ -415,10 +415,10 @@ Expected: 一次干净提交。
 
 ## 完成标志
 
-完成所有 5 个 Task 后，迁移成功。判定条件（与 spec §9 一致）：
+完成所有 5 个 Task 后，迁移成功。判定条件（与 spec §9 一致，§9 中"go vet 零警告"由用户 2026-08-30 裁决让步为"go vet 无新引入警告"）：
 
 1. ✅ `go build ./...` 零错误
-2. ✅ `go vet ./...` 零警告
+2. ✅ `go vet ./...` 退出码可非 0，但**不得有 mogo 未引入的新警告**（mogo 原代码继承的"repeats json tag"接受为遗留）
 3. ✅ `go test ./...` 全部通过
 4. ✅ `go test -race ./...` 无竞态告警
 5. ✅ mogo 仓库工作树无任何改动（git status 与计划开始前一致）
