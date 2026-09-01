@@ -159,7 +159,7 @@ Truncation + 文本配置 + 会话引用。详见 `responses_params.go`。
 ## 使用示例
 
 ```go
-import openai "hegq.net/mogo/pkg/protocol/openai"
+import openai "hegq.net/moproto/protocol/openai"
 
 // 反序列化 ChatCompletion 请求
 body := []byte(`{
