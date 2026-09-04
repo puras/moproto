@@ -51,6 +51,26 @@ u, err := usage.ParseOpenAI(&resp)
 
 （历史：本项目早期使用 `github.com/stretchr/testify` 作断言库，后续重构为标准库 `testing`，go.mod 已清空。）
 
+## 版本
+
+当前发布版本：`v0.1.0`（发布于 2026-09-04）。
+
+可通过根包常量读取版本号：
+
+```go
+import "github.com/puras/moproto"
+
+fmt.Println(moproto.Version)            // "0.1.0"
+fmt.Println(moproto.VersionMeta.ReleasedAt)
+// moproto.VersionMeta.CompatibleWith 列出已验证可双向转换的源模块路径
+```
+
+或通过 `-ldflags` 在编译期注入：
+
+```bash
+go build -ldflags "-X github.com/puras/moproto.Version=0.1.0" ./...
+```
+
 ## 版本同步策略
 
 本项目作为 mogo 协议层的独立镜像发布。当 mogo 内协议结构有更新时，
