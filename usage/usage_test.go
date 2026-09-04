@@ -5,11 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
-	pkganthropic "hegq.net/moproto/protocol/anthropic"
-	pkgopenai "hegq.net/moproto/protocol/openai"
+	pkganthropic "github.com/puras/moproto/protocol/anthropic"
+	pkgopenai "github.com/puras/moproto/protocol/openai"
 )
 
 // ============== P0-1: Base 字段命名统一（Anthropic 风格为权威） ==============
@@ -744,16 +741,32 @@ func TestUsage_MultimodalFields(t *testing.T) {
 		VideoDurationSec: 5,
 	}
 	b, err := json.Marshal(in)
-	require.NoError(t, err)
+	if err != nil {
+		t.Fatalf("marshal: %v", err)
+	}
 	var out Usage
-	require.NoError(t, json.Unmarshal(b, &out))
-	assert.Equal(t, int64(2), out.ImageCount)
-	assert.Equal(t, int64(1500), out.AudioInputChars)
-	assert.Equal(t, int64(800), out.AudioOutputChars)
-	assert.Equal(t, int64(5), out.VideoDurationSec)
+	if err := json.Unmarshal(b, &out); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+	if got := out.ImageCount; got != 2 {
+		t.Errorf("ImageCount = %d, want 2", got)
+	}
+	if got := out.AudioInputChars; got != 1500 {
+		t.Errorf("AudioInputChars = %d, want 1500", got)
+	}
+	if got := out.AudioOutputChars; got != 800 {
+		t.Errorf("AudioOutputChars = %d, want 800", got)
+	}
+	if got := out.VideoDurationSec; got != 5 {
+		t.Errorf("VideoDurationSec = %d, want 5", got)
+	}
 	// Base 字段也必须 round-trip 不变
-	assert.Equal(t, int64(100), out.InputTokens)
-	assert.Equal(t, int64(50), out.OutputTokens)
+	if got := out.InputTokens; got != 100 {
+		t.Errorf("InputTokens = %d, want 100", got)
+	}
+	if got := out.OutputTokens; got != 50 {
+		t.Errorf("OutputTokens = %d, want 50", got)
+	}
 }
 
 // TestUsage_Add_Multimodal 验证 Add() 正确累加 4 个多模态字段。
@@ -762,8 +775,12 @@ func TestUsage_Add_Multimodal(t *testing.T) {
 	a := &Usage{ImageCount: 1, VideoDurationSec: 3}
 	b := &Usage{ImageCount: 2, VideoDurationSec: 5}
 	a.Add(b)
-	assert.Equal(t, int64(3), a.ImageCount)
-	assert.Equal(t, int64(8), a.VideoDurationSec)
+	if got := a.ImageCount; got != 3 {
+		t.Errorf("ImageCount = %d, want 3", got)
+	}
+	if got := a.VideoDurationSec; got != 8 {
+		t.Errorf("VideoDurationSec = %d, want 8", got)
+	}
 }
 
 // TestUsage_Add_Multimodal_AudioChars 验证 Audio 字符字段累加（覆盖 Input/Output 双向）。
@@ -771,8 +788,12 @@ func TestUsage_Add_Multimodal_AudioChars(t *testing.T) {
 	a := &Usage{AudioInputChars: 100, AudioOutputChars: 50}
 	b := &Usage{AudioInputChars: 200, AudioOutputChars: 80}
 	a.Add(b)
-	assert.Equal(t, int64(300), a.AudioInputChars)
-	assert.Equal(t, int64(130), a.AudioOutputChars)
+	if got := a.AudioInputChars; got != 300 {
+		t.Errorf("AudioInputChars = %d, want 300", got)
+	}
+	if got := a.AudioOutputChars; got != 130 {
+		t.Errorf("AudioOutputChars = %d, want 130", got)
+	}
 }
 
 // TestUsage_IsZero_Multimodal 验证多模态字段非零时 IsZero() 返回 false。

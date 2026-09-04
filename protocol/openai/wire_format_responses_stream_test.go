@@ -4,39 +4,60 @@ import (
 	"encoding/json"
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestParseResponseSSEEvent_Created(t *testing.T) {
 	jsonStr := `{"type":"response.created","response":{"id":"resp_xxx"},"sequence_number":1}`
 	event, err := ParseResponseSSEEvent("data: " + jsonStr)
-	require.NoError(t, err)
-	require.NotNil(t, event)
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event == nil {
+		t.Fatalf("event should not be nil")
+	}
 	e := event.(OpenAIResponseCreatedEvent)
-	assert.Equal(t, "response.created", string(e.Type))
+	if got := string(e.Type); got != "response.created" {
+		t.Errorf("Type = %q, want %q", got, "response.created")
+	}
 }
 
 func TestParseResponseSSEEvent_OutputTextDelta(t *testing.T) {
 	jsonStr := `{"type":"response.output_text.delta","delta":"hello","item_id":"item_xxx","output_index":0,"content_index":0}`
 	event, err := ParseResponseSSEEvent("data: " + jsonStr)
-	require.NoError(t, err)
-	require.NotNil(t, event)
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event == nil {
+		t.Fatalf("event should not be nil")
+	}
 	e := event.(OpenAIResponseTextDeltaEvent)
-	assert.Equal(t, "response.output_text.delta", string(e.Type))
-	assert.Equal(t, "hello", e.Delta)
+	if got := string(e.Type); got != "response.output_text.delta" {
+		t.Errorf("Type = %q, want %q", got, "response.output_text.delta")
+	}
+	if e.Delta != "hello" {
+		t.Errorf("Delta = %q, want %q", e.Delta, "hello")
+	}
 }
 
 func TestParseResponseSSEEvent_Error(t *testing.T) {
 	jsonStr := `{"type":"error","error":{"code":"rate_limit_exceeded","message":"Rate limit exceeded"}}`
 	event, err := ParseResponseSSEEvent("data: " + jsonStr)
-	require.NoError(t, err)
-	require.NotNil(t, event)
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event == nil {
+		t.Fatalf("event should not be nil")
+	}
 	e := event.(OpenAIResponseErrorEvent)
-	assert.Equal(t, "error", string(e.Type))
-	require.NotNil(t, e.Error)
-	assert.Equal(t, "rate_limit_exceeded", e.Error.Code)
+	if got := string(e.Type); got != "error" {
+		t.Errorf("Type = %q, want %q", got, "error")
+	}
+	if e.Error == nil {
+		t.Fatalf("Error should not be nil")
+	}
+	if e.Error.Code != "rate_limit_exceeded" {
+		t.Errorf("Code = %q, want %q", e.Error.Code, "rate_limit_exceeded")
+	}
 }
 
 func TestParseResponseSSEEvent_AllTypes(t *testing.T) {
@@ -100,51 +121,78 @@ func TestParseResponseSSEEvent_AllTypes(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.typeVal, func(t *testing.T) {
 			event, err := ParseResponseSSEEvent("data: " + tc.json)
-			require.NoError(t, err)
-			require.NotNil(t, event, "type: %s", tc.typeVal)
+			if err != nil {
+				t.Fatalf("ParseResponseSSEEvent (type %s): %v", tc.typeVal, err)
+			}
+			if event == nil {
+				t.Fatalf("event should not be nil for type %s", tc.typeVal)
+			}
 
 			var parsed struct {
 				Type string `json:"type"`
 			}
-			err = json.Unmarshal([]byte(tc.json), &parsed)
-			require.NoError(t, err)
-			assert.NotEmpty(t, event, "event should not be nil for %s", tc.typeVal)
-			assert.Equal(t, tc.typeVal, parsed.Type)
+			if err := json.Unmarshal([]byte(tc.json), &parsed); err != nil {
+				t.Fatalf("Unmarshal tc.json: %v", err)
+			}
+			if parsed.Type != tc.typeVal {
+				t.Errorf("parsed.Type = %q, want %q", parsed.Type, tc.typeVal)
+			}
 		})
 	}
 }
 
 func TestParseResponseSSEEvent_UnknownType(t *testing.T) {
 	event, err := ParseResponseSSEEvent(`data: {"type":"unknown.event"}`)
-	require.NoError(t, err)
-	assert.Nil(t, event)
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event != nil {
+		t.Errorf("event should be nil, got %v", event)
+	}
 }
 
 func TestParseResponseSSEEvent_Empty(t *testing.T) {
 	event, err := ParseResponseSSEEvent("")
-	require.NoError(t, err)
-	assert.Nil(t, event)
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event != nil {
+		t.Errorf("event should be nil, got %v", event)
+	}
 }
 
 func TestParseResponseSSEEvent_NoPrefix(t *testing.T) {
 	jsonStr := `{"type":"response.created","response":{"id":"r1"},"sequence_number":1}`
 	event, err := ParseResponseSSEEvent(jsonStr)
-	require.NoError(t, err)
-	require.NotNil(t, event)
-	assert.Equal(t, "response.created", string(event.(OpenAIResponseCreatedEvent).Type))
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event == nil {
+		t.Fatalf("event should not be nil")
+	}
+	if got := string(event.(OpenAIResponseCreatedEvent).Type); got != "response.created" {
+		t.Errorf("Type = %q, want %q", got, "response.created")
+	}
 }
 
 func TestParseResponseSSEEvent_WithWhitespace(t *testing.T) {
 	jsonStr := `{"type":"response.created","response":{"id":"r1"},"sequence_number":1}`
 	event, err := ParseResponseSSEEvent("data:   " + jsonStr + "   ")
-	require.NoError(t, err)
-	require.NotNil(t, event)
-	assert.Equal(t, "response.created", string(event.(OpenAIResponseCreatedEvent).Type))
+	if err != nil {
+		t.Fatalf("ParseResponseSSEEvent: %v", err)
+	}
+	if event == nil {
+		t.Fatalf("event should not be nil")
+	}
+	if got := string(event.(OpenAIResponseCreatedEvent).Type); got != "response.created" {
+		t.Errorf("Type = %q, want %q", got, "response.created")
+	}
 }
 
 func TestParseResponseSSEEvent_InvalidJSON(t *testing.T) {
-	_, err := ParseResponseSSEEvent("data: {invalid json}")
-	require.Error(t, err)
+	if _, err := ParseResponseSSEEvent("data: {invalid json}"); err == nil {
+		t.Fatalf("expected error on invalid JSON")
+	}
 }
 
 func TestParseResponseSSEEvent_LineByLineSSE(t *testing.T) {
@@ -164,16 +212,30 @@ func TestParseResponseSSEEvent_LineByLineSSE(t *testing.T) {
 			continue
 		}
 		event, err := ParseResponseSSEEvent(line)
-		require.NoError(t, err)
+		if err != nil {
+			t.Fatalf("ParseResponseSSEEvent (line %q): %v", line, err)
+		}
 		if event != nil {
 			events = append(events, event)
 		}
 	}
 
-	require.Len(t, events, 5)
-	assert.Equal(t, "response.created", string(events[0].(OpenAIResponseCreatedEvent).Type))
-	assert.Equal(t, "response.in_progress", string(events[1].(OpenAIResponseInProgressEvent).Type))
-	assert.Equal(t, "response.output_text.delta", string(events[2].(OpenAIResponseTextDeltaEvent).Type))
-	assert.Equal(t, "response.output_text.done", string(events[3].(OpenAIResponseTextDoneEvent).Type))
-	assert.Equal(t, "response.completed", string(events[4].(OpenAIResponseCompletedEvent).Type))
+	if got := len(events); got != 5 {
+		t.Fatalf("len(events) = %d, want 5", got)
+	}
+	if got := string(events[0].(OpenAIResponseCreatedEvent).Type); got != "response.created" {
+		t.Errorf("events[0].Type = %q, want %q", got, "response.created")
+	}
+	if got := string(events[1].(OpenAIResponseInProgressEvent).Type); got != "response.in_progress" {
+		t.Errorf("events[1].Type = %q, want %q", got, "response.in_progress")
+	}
+	if got := string(events[2].(OpenAIResponseTextDeltaEvent).Type); got != "response.output_text.delta" {
+		t.Errorf("events[2].Type = %q, want %q", got, "response.output_text.delta")
+	}
+	if got := string(events[3].(OpenAIResponseTextDoneEvent).Type); got != "response.output_text.done" {
+		t.Errorf("events[3].Type = %q, want %q", got, "response.output_text.done")
+	}
+	if got := string(events[4].(OpenAIResponseCompletedEvent).Type); got != "response.completed" {
+		t.Errorf("events[4].Type = %q, want %q", got, "response.completed")
+	}
 }
