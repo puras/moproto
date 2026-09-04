@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	openai "hegq.net/moproto/protocol/openai"
+	openai "github.com/puras/moproto/protocol/openai"
 )
 
 // === Audio Transcription P0 补齐测试（与 wire_format_responses_test.go 同包）===

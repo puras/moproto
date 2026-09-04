@@ -15,7 +15,7 @@ import (
 	"fmt"
 	"strings"
 
-	"hegq.net/moproto/protocol/anthropic"
+	"github.com/puras/moproto/protocol/anthropic"
 )
 
 // MarshalSSEFrame 把一个 AnthropicStreamEvent 序列化为完整 SSE 帧字节。

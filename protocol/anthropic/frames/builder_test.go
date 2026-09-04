@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"hegq.net/moproto/protocol/anthropic"
+	"github.com/puras/moproto/protocol/anthropic"
 )
 
 // TestBuildMessageStartFrame_RequiredFields 验证 error 路径。

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	openai "hegq.net/moproto/protocol/openai"
+	openai "github.com/puras/moproto/protocol/openai"
 )
 
 // === A. AudioTranslation 请求参数 ===

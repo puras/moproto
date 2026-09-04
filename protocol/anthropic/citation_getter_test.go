@@ -3,7 +3,7 @@ package anthropic_test
 import (
 	"testing"
 
-	anthropic "hegq.net/moproto/protocol/anthropic"
+	anthropic "github.com/puras/moproto/protocol/anthropic"
 )
 
 // TestGetCitationCitedText 验证 5 个实现都能取到 cited_text。

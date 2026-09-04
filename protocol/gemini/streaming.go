@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
-	pkgusage "hegq.net/moproto/usage"
+	pkgusage "github.com/puras/moproto/usage"
 )
 
 // ParseGeminiStreamChunk 解析 Gemini SSE 行为 *GeminiGenerateContentResponse。

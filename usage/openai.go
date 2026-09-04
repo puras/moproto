@@ -3,7 +3,7 @@ package usage
 import (
 	"encoding/json"
 
-	pkgopenai "hegq.net/moproto/protocol/openai"
+	pkgopenai "github.com/puras/moproto/protocol/openai"
 )
 
 // FromOpenAICompletion 将 OpenAICompletionUsage 转换为统一 Usage。

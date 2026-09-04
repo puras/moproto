@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"hegq.net/moproto/protocol/openai"
+	"github.com/puras/moproto/protocol/openai"
 )
 
 // WriteOpenAIError 把 errormap.ErrorType 字符串值转换为 OpenAI 协议原生错误响应，

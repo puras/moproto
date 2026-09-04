@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	anthropic "hegq.net/moproto/protocol/anthropic"
+	anthropic "github.com/puras/moproto/protocol/anthropic"
 )
 
 // TestWireFormatContentBlocks 验证 11 个内容块的 JSON marshal 输出与重构前一致。

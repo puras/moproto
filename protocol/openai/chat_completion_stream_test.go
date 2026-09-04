@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	openai "hegq.net/moproto/protocol/openai"
+	openai "github.com/puras/moproto/protocol/openai"
 )
 
 // TestParseSSEEvent_PreservesRawBytes 验证上游 chunk 的 omitempty 零值字段

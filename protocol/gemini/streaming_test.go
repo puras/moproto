@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	pkgusage "hegq.net/moproto/usage"
+	pkgusage "github.com/puras/moproto/usage"
 )
 
 // jsonMarshal 简写：测试中调用 GeminiGenerateContentResponse.MarshalJSON。

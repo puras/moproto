@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"strings"
 
-	"hegq.net/moproto/protocol/gemini"
+	"github.com/puras/moproto/protocol/gemini"
 )
 
 // MarshalSSEFrame 把 *gemini.GeminiGenerateContentResponse 序列化为 SSE 帧字节。

@@ -3,7 +3,7 @@ package frames
 import (
 	"fmt"
 
-	"hegq.net/moproto/protocol/anthropic"
+	"github.com/puras/moproto/protocol/anthropic"
 )
 
 // MessageStartOptions 构造 message_start 帧所需参数。

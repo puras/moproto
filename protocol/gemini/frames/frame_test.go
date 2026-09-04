@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"hegq.net/moproto/protocol/gemini"
+	"github.com/puras/moproto/protocol/gemini"
 )
 
 func TestMarshalSSEFrame_GeminiResponse(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"hegq.net/moproto/protocol/anthropic"
+	"github.com/puras/moproto/protocol/anthropic"
 )
 
 // TestMarshalSSEFrame_AllVariants 验证 8 个 stream event 变体都能正确序列化。
