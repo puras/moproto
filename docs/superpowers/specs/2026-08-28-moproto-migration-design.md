@@ -181,7 +181,7 @@ require (
 
 ### 5.2 依赖策略
 
-- 仅引入 mogo 子包**实际使用**的三方依赖（实际只 `testify`，且为测试用）
+- 仅引入 mogo 子包**实际使用**的三方依赖（重构后无任何三方依赖，标准库 `testing` 已覆盖全部测试）
 - **不引入** `hegq.net/mogo/...` 任何路径
 - **不引入** mogo 的业务三方依赖（gin、redis、stripe、zap 等）
 
@@ -326,6 +326,6 @@ grep -rl 'hegq.net/mogo/internal' \
 `pkg/protocol/` 与 `pkg/usage/` 内非测试代码的三方 import：
 
 - `github.com/google/uuid` — 实际未在 protocol/usage 内非测试代码直接使用
-- `github.com/stretchr/testify` — 仅测试
+- `github.com/stretchr/testify` — 仅测试（**后续重构已移除**，全部测试改用标准库 `testing`）
 
-最终 go.mod 仅需 `testify`（测试用）；`go mod tidy` 后会按需补全 indirect 依赖。
+最终 go.mod **不再依赖** `testify`（测试用），`go mod tidy` 后 go.sum 为空，零三方依赖。

@@ -47,8 +47,9 @@ u, err := usage.ParseOpenAI(&resp)
 
 ## 三方依赖
 
-- `github.com/stretchr/testify` — 测试用
-- 必要时追加 `github.com/leanovate/gopter` — property-based 测试
+无第三方依赖。所有测试均使用标准库 `testing` 包。
+
+（历史：本项目早期使用 `github.com/stretchr/testify` 作断言库，后续重构为标准库 `testing`，go.mod 已清空。）
 
 ## 版本同步策略
 

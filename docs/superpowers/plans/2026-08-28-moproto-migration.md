@@ -6,7 +6,7 @@
 
 **Architecture:** 单 Go module（`hegq.net/moproto`），顶层布局 `protocol/{openai,anthropic,gemini}` + `usage/`，所有源文件由 mogo 镜像复制，仅替换 import 路径（`hegq.net/mogo/pkg/` → `hegq.net/moproto/`）与移除子目录内的 `go.mod`/`go.sum`；包声明（`package openai` 等）保持不变；测试文件全部随源文件复制。
 
-**Tech Stack:** Go 1.26、`github.com/stretchr/testify`（测试用，必要时追加 `github.com/leanovate/gopter`）。
+**Tech Stack:** Go 1.26、零三方依赖（标准库 `testing` 即可覆盖全部测试）。
 
 **Spec:** `docs/superpowers/specs/2026-08-28-moproto-migration-design.md`
 
@@ -365,8 +365,9 @@ u, err := usage.ParseOpenAI(&resp)
 
 ## 三方依赖
 
-- `github.com/stretchr/testify` — 测试用
-- 必要时追加 `github.com/leanovate/gopter` — property-based 测试
+无第三方依赖。
+
+（历史：迁移期间曾使用 `github.com/stretchr/testify` 作测试断言库；后续重构为标准库 `testing`，go.mod 已清空、go.sum 为空。）
 
 ## 版本同步策略
 
